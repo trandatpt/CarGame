@@ -1,0 +1,60 @@
+# depslib dependency file v1.0
+1743731870 source:d:\sdl\cardodgegame\car.cpp
+	<SDL.h>
+	"car.h"
+	"defs.h"
+
+1743667239 d:\sdl\cardodgegame\car.h
+
+1743665190 d:\sdl\cardodgegame\obstacle.h
+	<SDL.h>
+	<vector>
+
+1743710500 source:d:\sdl\cardodgegame\graphics.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<vector>
+	<cstdlib>
+	<ctime>
+	<cmath>
+	"graphics.h"
+	"defs.h"
+	"car.h"
+
+1743666772 d:\sdl\cardodgegame\graphics.h
+
+1743665177 source:d:\sdl\cardodgegame\obstacle.cpp
+	"obstacle.h"
+	"defs.h"
+	<vector>
+	<cstdlib>
+
+1743640283 source:d:\sdl\cardodgegame\lane.cpp
+
+1743639711 d:\sdl\cardodgegame\lane.h
+
+1743731958 d:\sdl\cardodgegame\defs.h
+
+1743666865 source:d:\sdl\cardodgegame\main.cpp
+	<SDL.h>
+	<iostream>
+	<cstdlib>
+	<ctime>
+	"defs.h"
+	"graphics.h"
+	"car.h"
+
+1743641029 source:d:\sdl\cardodgegame\input.cpp
+	"input.h"
+
+1743641029 d:\sdl\cardodgegame\input.h
+	<SDL.h>
+
+1743641029 source:d:\sdl\cardodgegame\game.cpp
+	"game.h"
+
+1743641105 d:\sdl\cardodgegame\game.h
+	<SDL.h>
+	"graphics.h"
+	"input.h"
+
