@@ -7,4 +7,4 @@ struct Car {
     void moveRight();
 };
 
-#endif // _CAR_H__
+#endif
