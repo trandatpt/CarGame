@@ -5,11 +5,9 @@
 
 1743784744 d:\sdl\cardodgegame\car.h
 
-1743665190 d:\sdl\cardodgegame\obstacle.h
-	<SDL.h>
-	<vector>
+1743931706 d:\sdl\cardodgegame\obstacle.h
 
-1743784793 source:d:\sdl\cardodgegame\graphics.cpp
+1743931744 source:d:\sdl\cardodgegame\graphics.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -22,16 +20,16 @@
 	"graphics.h"
 	"defs.h"
 	"car.h"
+	"obstacle.h"
 
 1743784652 d:\sdl\cardodgegame\graphics.h
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 
-1743665177 source:d:\sdl\cardodgegame\obstacle.cpp
-	"obstacle.h"
+1743931629 source:d:\sdl\cardodgegame\obstacle.cpp
 	"defs.h"
-	<vector>
-	<cstdlib>
+	"obstacle.h"
+	"graphics.h"
 
 1743640283 source:d:\sdl\cardodgegame\lane.cpp
 
@@ -39,11 +37,12 @@
 
 1743731958 d:\sdl\cardodgegame\defs.h
 
-1743784551 source:d:\sdl\cardodgegame\main.cpp
+1743931651 source:d:\sdl\cardodgegame\main.cpp
 	<iostream>
 	"defs.h"
 	"graphics.h"
 	"car.h"
+	"obstacle.h"
 
 1743641029 source:d:\sdl\cardodgegame\input.cpp
 	"input.h"

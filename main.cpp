@@ -2,6 +2,7 @@
 #include "defs.h"
 #include "graphics.h"
 #include "car.h"
+#include "obstacle.h"
 
 using namespace std;
 

@@ -10,25 +10,12 @@
 #include "graphics.h"
 #include "defs.h"
 #include "car.h"
+#include "obstacle.h"
 
 using namespace std;
 
 Graphics graphics;
 Car car;
-
-struct Obstacle {
-    int x, y;
-    bool active;
-    int imageIndex;
-
-    void reset() {
-        x = lane_positions[rand() % 4];
-        y = -OBSTACLE_HEIGHT;
-        active = true;
-        imageIndex = rand() % 5;
-    }
-};
-
 vector<Obstacle> obstacles;
 
 void Graphics::init() {

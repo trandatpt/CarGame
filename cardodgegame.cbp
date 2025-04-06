@@ -38,6 +38,8 @@
 		<Unit filename="graphics.cpp" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="obstacle.cpp" />
+		<Unit filename="obstacle.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
