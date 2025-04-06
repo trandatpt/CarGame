@@ -32,21 +32,21 @@ void Graphics::init() {
     }
     backgroundY = 0;
     backgroundSpeed = 5;
-    car_image = loadTexture("car.png", renderer);
-    background_image = loadTexture("roadway.jpg", renderer);
-    obstacle_images[0] = loadTexture("obstacle1.png", renderer);
-    obstacle_images[1] = loadTexture("obstacle2.png", renderer);
-    obstacle_images[2] = loadTexture("obstacle3.png", renderer);
-    obstacle_images[3] = loadTexture("obstacle4.png", renderer);
-    obstacle_images[4] = loadTexture("obstacle5.png", renderer);
+    car_image = loadTexture("asset//car.png", renderer);
+    background_image = loadTexture("asset//roadway.jpg", renderer);
+    obstacle_images[0] = loadTexture("asset//obstacle1.png", renderer);
+    obstacle_images[1] = loadTexture("asset//obstacle2.png", renderer);
+    obstacle_images[2] = loadTexture("asset//obstacle3.png", renderer);
+    obstacle_images[3] = loadTexture("asset//obstacle4.png", renderer);
+    obstacle_images[4] = loadTexture("asset//obstacle5.png", renderer);
 
     TTF_Init();
-    font = TTF_OpenFont("arial.ttf", 30);
+    font = TTF_OpenFont("asset//arial.ttf", 30);
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    bgm = Mix_LoadMUS("music.mp3");
-    crashSound = Mix_LoadWAV("crash.wav");
+    bgm = Mix_LoadMUS("asset//music.mp3");
+    crashSound = Mix_LoadWAV("asset//crash.wav");
 
     if (bgm) Mix_PlayMusic(bgm, -1); // -1 là lặp vô hạn
 }

@@ -26,10 +26,10 @@
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 
-1743931629 source:d:\sdl\cardodgegame\obstacle.cpp
+1743931920 source:d:\sdl\cardodgegame\obstacle.cpp
 	"defs.h"
 	"obstacle.h"
-	"graphics.h"
+	<cstdlib>
 
 1743640283 source:d:\sdl\cardodgegame\lane.cpp
 
