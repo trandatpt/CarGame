@@ -22,7 +22,7 @@
 	"car.h"
 	"obstacle.h"
 
-1744125943 d:\sdl\cardodgegame\graphics.h
+1744126762 d:\sdl\cardodgegame\graphics.h
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 
@@ -35,9 +35,9 @@
 
 1743639711 d:\sdl\cardodgegame\lane.h
 
-1744123592 d:\sdl\cardodgegame\defs.h
+1744126268 d:\sdl\cardodgegame\defs.h
 
-1744123189 source:d:\sdl\cardodgegame\main.cpp
+1744126268 source:d:\sdl\cardodgegame\main.cpp
 	<iostream>
 	"defs.h"
 	"graphics.h"

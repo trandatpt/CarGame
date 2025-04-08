@@ -8,7 +8,5 @@ const int lane_positions[4] = { 110 , 350 , 590 , 830 }; // Vị trí 4 làn tho
 #define CAR_HEIGHT 100
 #define OBSTACLE_WIDTH 70
 #define OBSTACLE_HEIGHT 80
-#define GAME_START 0
-#define GAME_PLAYING 1
 
 #endif

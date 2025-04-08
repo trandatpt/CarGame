@@ -18,6 +18,5 @@ int main(int argc, char* argv[]) {
     }
 
     graphics.quit();           // Giải phóng tài nguyên
-    cout << "Game Over! Your score: " << graphics.score << endl;
     return 0;
 }

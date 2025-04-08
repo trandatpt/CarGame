@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-enum GameState { START, PLAYING, GAMEOVER };
+enum GameState { START, PLAYING, GAMEOVER }; // trạng thái game
 
 struct Graphics {
     GameState gameState = START;

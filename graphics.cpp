@@ -25,14 +25,18 @@ void Graphics::init() {
     // Khởi tạo vị trí ban đầu của xe
     car.x = lane_positions[rand() % 4];
     car.y = SCREEN_HEIGHT - CAR_HEIGHT - 20;
+
+    // Tạo 3 obstacle ban đầu và thêm vào vector
     for (int i = 0; i < 3; i++) {
         Obstacle obs;
         obs.reset();
         obs.y -= i * (OBSTACLE_HEIGHT + 200);
         obstacles.push_back(obs);
     }
+
     background = 0;
-    backgroundSpeed = 5;
+    backgroundSpeed = 5; // tốc độ cuộn ban đầu
+
     car_image = loadTexture("asset//car.png", renderer);
     background_image = loadTexture("asset//roadway.jpg", renderer);
     obstacle_images[0] = loadTexture("asset//obstacle1.png", renderer);
@@ -55,7 +59,7 @@ SDL_Texture* Graphics::loadTexture(const char *filename, SDL_Renderer* renderer)
     return texture;
 }
 
-void Graphics::state() {
+void Graphics::state() {    // xử lí trạng thái game
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) running = false;
@@ -83,25 +87,26 @@ void Graphics::state() {
     }
 }
 
-void Graphics::update() {
+void Graphics::update() {   // cập nhật trạng thái game
     if (gameState != PLAYING) return;
 
     background += backgroundSpeed;
 
     if (background >= SCREEN_HEIGHT) {
-        background = 0;
+        background = 0; // lặp lại nền
     }
 
     int maxSpeed = 15;
-    backgroundSpeed = 5 + min((int)sqrt(score), maxSpeed - 5);
+    backgroundSpeed = 5 + min((int)sqrt(score), maxSpeed - 5);  // tăng tốc độ cuộn theo điểm
 
-    for (auto& obs : obstacles) {
+    for (auto& obs : obstacles) {   // duyệt obstacle
         obs.y += backgroundSpeed;
-        if (obs.y > SCREEN_HEIGHT) {
+        if (obs.y > SCREEN_HEIGHT) {    // obstacle ra ngoài màn hình reset lại và + điểm
             obs.reset();
             score++;
         }
 
+        //Kiểm tra va chạm
         if (obs.active &&
             car.x < obs.x + OBSTACLE_WIDTH &&
             car.x + CAR_WIDTH > obs.x &&
@@ -109,7 +114,7 @@ void Graphics::update() {
             car.y + CAR_HEIGHT > obs.y) {
             Mix_PlayChannel(-1, crashSound, 0);
             Mix_HaltMusic(); // dừng nhạc khi đâm
-            SDL_Delay(1000);
+            SDL_Delay(1000); // Delay trước khi thoát khỏi game để nghe được nhạc va chạm
             gameState = GAMEOVER;
         }
     }
@@ -125,7 +130,7 @@ void renderText(SDL_Renderer* renderer, TTF_Font* font, const string& text, int 
 }
 
 void Graphics::render() {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // nền đen
     SDL_RenderClear(renderer);
 
     if (gameState == START) {
@@ -168,11 +173,11 @@ void Graphics::render() {
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::quit() {
+void Graphics::quit() { // giải phóng bộ nhớ
     if (car_image) SDL_DestroyTexture(car_image);
     if (background_image) SDL_DestroyTexture(background_image);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         if (obstacle_images[i]) SDL_DestroyTexture(obstacle_images[i]);
     }
 
