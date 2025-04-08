@@ -4,7 +4,11 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+enum GameState { START, PLAYING };
+
 struct Graphics {
+    GameState gameState = START;
+
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     SDL_Texture* background_image = nullptr;

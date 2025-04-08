@@ -60,16 +60,25 @@ void Graphics::handleEvents() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) running = false;
+
         if (e.type == SDL_KEYDOWN) {
-            switch (e.key.keysym.sym) {
-                case SDLK_LEFT: car.moveLeft(); break;
-                case SDLK_RIGHT: car.moveRight(); break;
+            if (gameState == START) {
+                if (e.key.keysym.sym == SDLK_RETURN) { // Nhấn Enter để chơi
+                    gameState = PLAYING;
+                }
+            } else if (gameState == PLAYING) {
+                switch (e.key.keysym.sym) {
+                    case SDLK_LEFT: car.moveLeft(); break;
+                    case SDLK_RIGHT: car.moveRight(); break;
+                }
             }
         }
     }
 }
 
 void Graphics::update() {
+    if (gameState != PLAYING) return;
+
     backgroundY += backgroundSpeed;
 
     if (backgroundY >= SCREEN_HEIGHT) {
@@ -91,7 +100,7 @@ void Graphics::update() {
             car.x + CAR_WIDTH > obs.x &&
             car.y < obs.y + OBSTACLE_HEIGHT &&
             car.y + CAR_HEIGHT > obs.y) {
-            Mix_PlayChannel(-1, crashSound, 0);// 0 là phát 1 lần
+            Mix_PlayChannel(-1, crashSound, 0);
             SDL_Delay(1000);
             running = false;
         }
@@ -111,14 +120,22 @@ void Graphics::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    // Vẽ background hai lần để tạo hiệu ứng cuộn liên tục
-    SDL_Rect bgRect1 = { 0, backgroundY - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
-    SDL_Rect bgRect2 = { 0, backgroundY, SCREEN_WIDTH, SCREEN_HEIGHT };
+    if (gameState == START) {
+        SDL_Color white = {255, 255, 255, 255};
+        SDL_Color yellow = {255, 255, 0, 255};
 
-    if (background_image) {
-        SDL_RenderCopy(renderer, background_image, NULL, &bgRect1);
-        SDL_RenderCopy(renderer, background_image, NULL, &bgRect2);
+        renderText(renderer, font, "CAR DODGE GAME", SCREEN_WIDTH/2 - 170 , 150, yellow);
+        renderText(renderer, font, "Press ENTER to Play", SCREEN_WIDTH/2 - 190 , 250, white);
+        renderText(renderer, font, "Use left and right to move", SCREEN_WIDTH/2 - 250, 300, white);
     }
+    else if (gameState == PLAYING) {
+        // Vẽ background cuộn
+        SDL_Rect bgRect1 = { 0, backgroundY - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
+        SDL_Rect bgRect2 = { 0, backgroundY, SCREEN_WIDTH, SCREEN_HEIGHT };
+        if (background_image) {
+            SDL_RenderCopy(renderer, background_image, NULL, &bgRect1);
+            SDL_RenderCopy(renderer, background_image, NULL, &bgRect2);
+        }
 
     SDL_Rect carRect = { car.x, car.y, CAR_WIDTH, CAR_HEIGHT };
     if (car_image) {
@@ -133,8 +150,9 @@ void Graphics::render() {
     }
     SDL_Color yellow = {255, 255, 0, 255};
         renderText(renderer, font, "Score: " + to_string(score), 20, 20, yellow);
-
+    }
     SDL_RenderPresent(renderer);
+
 }
 
 void Graphics::clean() {
