@@ -14,7 +14,6 @@
 
 using namespace std;
 
-Graphics graphics;
 Car car;
 vector<Obstacle> obstacles;
 
@@ -22,6 +21,8 @@ void Graphics::init() {
     window = SDL_CreateWindow("Car Dodge Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     srand(time(0));
+
+    // Khởi tạo vị trí ban đầu của xe
     car.x = lane_positions[rand() % 4];
     car.y = SCREEN_HEIGHT - CAR_HEIGHT - 20;
     for (int i = 0; i < 3; i++) {
@@ -30,7 +31,7 @@ void Graphics::init() {
         obs.y -= i * (OBSTACLE_HEIGHT + 200);
         obstacles.push_back(obs);
     }
-    backgroundY = 0;
+    background = 0;
     backgroundSpeed = 5;
     car_image = loadTexture("asset//car.png", renderer);
     background_image = loadTexture("asset//roadway.jpg", renderer);
@@ -46,9 +47,7 @@ void Graphics::init() {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
     bgm = Mix_LoadMUS("asset//music.mp3");
-    crashSound = Mix_LoadWAV("asset//crash.wav");
-
-    if (bgm) Mix_PlayMusic(bgm, -1); // -1 là lặp vô hạn
+    crashSound = Mix_LoadWAV("asset//dead.mp3");
 }
 
 SDL_Texture* Graphics::loadTexture(const char *filename, SDL_Renderer* renderer) {
@@ -56,7 +55,7 @@ SDL_Texture* Graphics::loadTexture(const char *filename, SDL_Renderer* renderer)
     return texture;
 }
 
-void Graphics::handleEvents() {
+void Graphics::state() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) running = false;
@@ -65,11 +64,19 @@ void Graphics::handleEvents() {
             if (gameState == START) {
                 if (e.key.keysym.sym == SDLK_RETURN) { // Nhấn Enter để chơi
                     gameState = PLAYING;
+                    if (bgm) Mix_PlayMusic(bgm, -1); // -1 là lặp vô hạn
                 }
             } else if (gameState == PLAYING) {
                 switch (e.key.keysym.sym) {
                     case SDLK_LEFT: car.moveLeft(); break;
                     case SDLK_RIGHT: car.moveRight(); break;
+                }
+            } else if (gameState == GAMEOVER) {
+                if (e.key.keysym.sym == SDLK_RETURN) {
+                    resetGame(); // Tạo hàm này bên dưới
+                }
+                if (e.key.keysym.sym == SDLK_ESCAPE) {
+                    running = false;
                 }
             }
         }
@@ -79,10 +86,10 @@ void Graphics::handleEvents() {
 void Graphics::update() {
     if (gameState != PLAYING) return;
 
-    backgroundY += backgroundSpeed;
+    background += backgroundSpeed;
 
-    if (backgroundY >= SCREEN_HEIGHT) {
-        backgroundY = 0;
+    if (background >= SCREEN_HEIGHT) {
+        background = 0;
     }
 
     int maxSpeed = 15;
@@ -101,8 +108,9 @@ void Graphics::update() {
             car.y < obs.y + OBSTACLE_HEIGHT &&
             car.y + CAR_HEIGHT > obs.y) {
             Mix_PlayChannel(-1, crashSound, 0);
+            Mix_HaltMusic(); // dừng nhạc khi đâm
             SDL_Delay(1000);
-            running = false;
+            gameState = GAMEOVER;
         }
     }
 }
@@ -130,32 +138,37 @@ void Graphics::render() {
     }
     else if (gameState == PLAYING) {
         // Vẽ background cuộn
-        SDL_Rect bgRect1 = { 0, backgroundY - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
-        SDL_Rect bgRect2 = { 0, backgroundY, SCREEN_WIDTH, SCREEN_HEIGHT };
+        SDL_Rect bgRect1 = { 0, background - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
+        SDL_Rect bgRect2 = { 0, background, SCREEN_WIDTH, SCREEN_HEIGHT };
         if (background_image) {
             SDL_RenderCopy(renderer, background_image, NULL, &bgRect1);
             SDL_RenderCopy(renderer, background_image, NULL, &bgRect2);
         }
-
-    SDL_Rect carRect = { car.x, car.y, CAR_WIDTH, CAR_HEIGHT };
-    if (car_image) {
-        SDL_RenderCopy(renderer, car_image, NULL, &carRect);
-    }
-
-    for (const auto& obs : obstacles) {
-        SDL_Rect obsRect = { obs.x, obs.y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT };
-        if (obstacle_images[obs.imageIndex]) {
-            SDL_RenderCopy(renderer, obstacle_images[obs.imageIndex], NULL, &obsRect);
+        SDL_Rect carRect = { car.x, car.y, CAR_WIDTH, CAR_HEIGHT };
+        if (car_image) {
+            SDL_RenderCopy(renderer, car_image, NULL, &carRect);
         }
-    }
-    SDL_Color yellow = {255, 255, 0, 255};
+        for (const auto& obs : obstacles) {
+            SDL_Rect obsRect = { obs.x, obs.y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT };
+            if (obstacle_images[obs.imageIndex]) {
+            SDL_RenderCopy(renderer, obstacle_images[obs.imageIndex], NULL, &obsRect);
+            }
+        }
+        SDL_Color yellow = {255, 255, 0, 255};
         renderText(renderer, font, "Score: " + to_string(score), 20, 20, yellow);
     }
+    else if (gameState == GAMEOVER) {
+        SDL_Color red = {255, 0, 0, 255};
+        SDL_Color white = {255, 255, 255, 255};
+        renderText(renderer, font, "GAME OVER", SCREEN_WIDTH / 2 - 120, 150, red);
+        renderText(renderer, font, "Your Score: " + to_string(score), SCREEN_WIDTH / 2 - 150, 220, white);
+        renderText(renderer, font, "Press ENTER to Play Again", SCREEN_WIDTH / 2 - 250, 280, white);
+        renderText(renderer, font, "Press ESC to Quit", SCREEN_WIDTH / 2 - 190, 320, white);
+    }
     SDL_RenderPresent(renderer);
-
 }
 
-void Graphics::clean() {
+void Graphics::quit() {
     if (car_image) SDL_DestroyTexture(car_image);
     if (background_image) SDL_DestroyTexture(background_image);
 
@@ -174,4 +187,23 @@ void Graphics::clean() {
     Mix_CloseAudio();
 
     SDL_Quit();
+}
+
+void Graphics::resetGame() {
+    score = 0;
+    background = 0;
+    backgroundSpeed = 5;
+    car.x = lane_positions[rand() % 4];
+    car.y = SCREEN_HEIGHT - CAR_HEIGHT - 20;
+
+    obstacles.clear();
+    for (int i = 0; i < 3; i++) {
+        Obstacle obs;
+        obs.reset();
+        obs.y -= i * (OBSTACLE_HEIGHT + 200);
+        obstacles.push_back(obs);
+    }
+
+    gameState = PLAYING;
+    if (bgm) Mix_PlayMusic(bgm, -1);
 }

@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-enum GameState { START, PLAYING };
+enum GameState { START, PLAYING, GAMEOVER };
 
 struct Graphics {
     GameState gameState = START;
@@ -24,16 +24,17 @@ struct Graphics {
     int score = 0;
     bool running = true;
 
-    int backgroundY = 0;
+    int background = 0;
     int backgroundSpeed = 5;
 
     void reset();
     void init();
     SDL_Texture *loadTexture(const char *filename, SDL_Renderer* renderer);
-    void handleEvents();
+    void state();
     void update();
     void render();
-    void clean();
+    void quit();
+    void resetGame();
 };
 
 #endif

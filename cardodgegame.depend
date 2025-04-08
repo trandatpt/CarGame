@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1743784401 source:d:\sdl\cardodgegame\car.cpp
+1744123189 source:d:\sdl\cardodgegame\car.cpp
 	"car.h"
 	"defs.h"
 
 1743784744 d:\sdl\cardodgegame\car.h
 
-1743931706 d:\sdl\cardodgegame\obstacle.h
+1744093926 d:\sdl\cardodgegame\obstacle.h
 
-1744047546 source:d:\sdl\cardodgegame\graphics.cpp
+1744125943 source:d:\sdl\cardodgegame\graphics.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -22,7 +22,7 @@
 	"car.h"
 	"obstacle.h"
 
-1744047276 d:\sdl\cardodgegame\graphics.h
+1744125943 d:\sdl\cardodgegame\graphics.h
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 
@@ -35,9 +35,9 @@
 
 1743639711 d:\sdl\cardodgegame\lane.h
 
-1743731958 d:\sdl\cardodgegame\defs.h
+1744123592 d:\sdl\cardodgegame\defs.h
 
-1743931651 source:d:\sdl\cardodgegame\main.cpp
+1744123189 source:d:\sdl\cardodgegame\main.cpp
 	<iostream>
 	"defs.h"
 	"graphics.h"
